@@ -5,9 +5,6 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
 
-println name
-println project.name
-
 task copy(type: Copy, group: "Custom", description: "Copies sources to the dest directory"){
    from "src"
    into "dest"
@@ -15,13 +12,64 @@ task copy(type: Copy, group: "Custom", description: "Copies sources to the dest 
 
 task helloWorld {
 	"HelloWorld"
+    println "HelloWorld"
 }
 
-task eniola {	
+task eniolaTask {
 	description "Hello Eniola, run this task"
 	group "Gradle Demo"
 	doLast {
 		println "HelloWord Gradle and groovy"
 	}
 }
+
+task groovy {
+    doLast {
+        println "HelloWorld"
+        println name
+        println project.name
+    }
+}
+
+class GreetUser {
+    static void sayHello(){
+        System.out.println("Hello world, welcome to groovy")
+    }
+}
+
+
+def doubleValue(n){
+    n + n
+}
+
+//closure
+def myClosure = {
+    println "This is a closure"
+}
+
+task sayHello {
+    doLast {
+        GreetUser greetUser = new GreetUser()
+        greetUser.sayHello()
+    }
+}
+
+task basicArithmethic {
+    doLast{
+        def x = 6.0
+        println("X has a value of: $x")
+        println("Lets do some simple addition: 5 + 6 = ${5 + 6 }")
+        println("x is of type: ${x.class}")
+        println("negatinbg x gives: ${x.negate()}")
+        println("Run function doubleValue on x: ${doubleValue(x )}")
+
+        //call double value without parenthesis
+        doubleValue 200
+
+        //call closure here
+        myClosure()
+    }
+}
+
+
 
