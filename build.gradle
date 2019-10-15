@@ -38,13 +38,20 @@ class GreetUser {
 }
 
 
-def doubleValue(n){
+def doubleIt(n){
     n + n
 }
 
 //closure
 def myClosure = {
-    println "This is a closure"
+    x -> x + x
+    //println "This is a closure"
+}
+
+//higher order function (function that takes in another function as input)
+
+def applyTwice(func, arg){
+    func(func(arg))
 }
 
 task sayHello {
@@ -61,15 +68,34 @@ task basicArithmethic {
         println("Lets do some simple addition: 5 + 6 = ${5 + 6 }")
         println("x is of type: ${x.class}")
         println("negatinbg x gives: ${x.negate()}")
-        println("Run function doubleValue on x: ${doubleValue(x )}")
+        println("Run function doubleValue on x: ${doubleIt(x )}")
 
         //call double value without parenthesis
-        doubleValue 200
+        doubleIt 200
 
         //call closure here
         myClosure()
+
+        //call higher ordered function
+        def result = applyTwice(myClosure, x)
+        println("Applying doubleIt twice to $x gives ${result}")
     }
 }
 
+task displayList {
+    doLast {
+        def myList = ["Gradle", "Groovy", "Java"]
+        def eachItem = {item -> println "List Item: $item"}
+        myList.each {eachItem}
+        myList.each {println " Compactly printing each list item: $it "}
+
+        def foo = "bar"
+        println "$foo + foo = ${foo + "foo"}"
+    }
+}
+
+//depends on
+
+//finalizedBy
 
 
