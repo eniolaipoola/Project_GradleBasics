@@ -49,7 +49,6 @@ def myClosure = {
 }
 
 //higher order function (function that takes in another function as input)
-
 def applyTwice(func, arg){
     func(func(arg))
 }
@@ -73,9 +72,6 @@ task basicArithmethic {
         //call double value without parenthesis
         doubleIt 200
 
-        //call closure here
-        myClosure()
-
         //call higher ordered function
         def result = applyTwice(myClosure, x)
         println("Applying doubleIt twice to $x gives ${result}")
@@ -94,8 +90,125 @@ task displayList {
     }
 }
 
-//depends on
+//classes in groovy
+class FamilyGreet {
+    String greeting = "Good day"
+    def printGreeting (){
+        println "Greeting: $greeting"
+    }
+}
 
-//finalizedBy
+
+// closures with delegate objects
+def greetingClosure = {
+    greeting = "Good morning Eniola"
+    printGreeting()
+}
+
+task runGreeting {
+    def familyGreeter = new FamilyGreet()
+    familyGreeter.printGreeting()
+    familyGreeter.greeting = "Good evening sir/ma"
+    familyGreeter.printGreeting()
+
+//set the delegate of greetingClosure to be an instance of FamilyGreet
+    greetingClosure.delegate = familyGreeter
+    greetingClosure()
+}
 
 
+//understanding gradle scripts
+project.task("My Gradle Tasks")
+task("Secong gradle task")
+task "funny gradle tasks"
+task funny  //abstract syntax tree transformation
+funny.description = "This is the description"
+funny.group = "This is the group"
+funny.doLast {println "Print this message last"}
+funny.doFirst {println "Do this first"}
+funny {
+    doLast {
+        println "Do this even more last"
+    }
+}
+
+funny {
+    doLast {
+        println "Do this last of all"
+    }
+}
+
+task myTask {
+    description "Running groovy tasks"
+    group "Tak group"
+    doLast {
+        println "Running task group"
+    }
+}
+
+//a configuration closure, use the equal sign
+task myTask2 {
+    description "Description"
+    group = "group"
+}
+
+//used when declaring a typed class
+task myTask3(description: "Another description") {
+    doLast {
+        println "doing something"
+    }
+}
+
+
+//task dependency and order
+//dependsOn
+task putOnSocks {
+    println "I am putting on my socks"
+}
+
+task putOnShoes {
+    dependsOn "putOnSocks"
+    doLast {
+        println "I am putting on shoes"
+    }
+}
+
+
+// finalized by
+task brushMyTeeth {
+    doLast {
+        println "Tooth brushed twice today"
+    }
+}
+
+task eatBreakfast {
+    finalizedBy "brushMyTeeth"
+    doLast {
+        println "Time to eat solid food"
+    }
+}
+
+task takeShower {
+    doLast {
+        println "Time to get a cool bath"
+    }
+}
+
+task putOnFragrance {
+    shouldRunAfter "takeShower"
+    doLast {
+        println "Smelling nice"
+    }
+}
+
+task getReady {
+    dependsOn = ["takeShower", "eatBreakfast", "putOnShoes"]
+    putOnShoes.shouldRunAfter(takeShower)
+}
+
+task getEquipped {
+    dependsOn tasks.matching {task -> task.name.startsWith("putOn")}
+    doLast {
+        println "All geared up!"
+    }
+}

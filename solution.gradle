@@ -1,0 +1,18 @@
+task hello {
+    println "hELLO this is my xth gradle task"
+}
+
+//task dependency and order
+//dependsOn
+// finalize
+
+task putOnSocks {
+    println "I am putting on my socks"
+}
+
+task putOnShoes {
+    dependsOn "putOnSocks"
+    doLast {
+        println "I am putting on shoes"
+    }
+}
