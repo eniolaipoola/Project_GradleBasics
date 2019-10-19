@@ -1,78 +1,54 @@
-task copyImages(type: Copy) {
-    from 'images'
-    into 'build'
-}
+apply plugin: "java"
 
-task copyJpegs(type: Copy) {
-    from 'images'
-    include '*.jpg'
-    into 'build'
-}
-
-task copyImageFolders(type: Copy){
-    from ('images'){
-        include '*.jpeg'
-        into 'jpeg'
-    }
-
-    from ('images'){
-        include '*.gifs'
-        into 'gifs'
-    }
-
-    into 'build'   //root copy destination
-}
-
-task zipImages (type: Zip){
-    baseName = 'images'
-    destinationDir = file('build')     //takes a java file object
-    from 'images'
-}
-
-task zipImageFolder (type: Zip){
-    baseName = 'images'
-    destinationDir = file('build')
-
-    from ('images') {
-        include '*.jpg'
-        into 'jpeg'
-    }
-
-    from ('images'){
-        include '*.gifs'
-        into 'gif'
+repositories {
+    flatDir {
+        dirs 'libs'
     }
 }
 
-task deleteBuild(type: Delete){
-    delete 'build'
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
 }
 
-//parameterize your build
-task printGreeting {
-    println greeting
-}
-
-//custom tasks
-class HelloTask extends DefaultTask {
-    String firstname
-
-    @TaskAction
-    void doAction(){
-        println "HelloWorld, $firstname"
+repositories {
+    maven {
+        url "https://repo.foo.arg/m2"
     }
 }
 
-task Hello (type: HelloTask){
-    firstname = "Eniola"
-}
-
-task test {
-    doLast {
-        println "1"
+repositories {
+    ivy {
+        url "https://repo.foo.arg/m2"
+        credentials {
+            username "user"
+            password "password"
+        }
     }
-
-    println "2"
 }
 
-println "3"
+//file based dependencies
+repositories {
+    ivy {
+        url "file://home/file/"
+    }
+}
+
+
+//dependencies
+dependencies {
+    compile 'com.google.guava:guava:18.0'
+}
+
+dependencies {
+    compile group: 'com.google.guava', name:'guava', version: '18.0'
+}
+
+dependencies {
+    compile files('libs/foo.jar', 'libs/bar.jar')
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
