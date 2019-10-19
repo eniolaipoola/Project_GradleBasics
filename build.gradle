@@ -1,54 +1,23 @@
 apply plugin: "java"
 
 repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
-repositories {
     mavenCentral()
-    mavenLocal()
-    jcenter()
-}
-
-repositories {
-    maven {
-        url "https://repo.foo.arg/m2"
-    }
-}
-
-repositories {
-    ivy {
-        url "https://repo.foo.arg/m2"
-        credentials {
-            username "user"
-            password "password"
-        }
-    }
-}
-
-//file based dependencies
-repositories {
-    ivy {
-        url "file://home/file/"
-    }
-}
-
-
-//dependencies
-dependencies {
-    compile 'com.google.guava:guava:18.0'
 }
 
 dependencies {
-    compile group: 'com.google.guava', name:'guava', version: '18.0'
+    compile 'org.springframework:spring-core:4.1.1.RELEASE'
 }
 
 dependencies {
-    compile files('libs/foo.jar', 'libs/bar.jar')
+    compile 'commons-logging:commons-logging:1.2'
+    testCompile 'junit:junit:4.11'
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+configurations {
+    custom
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.custom
+    into 'build/libs'
 }
