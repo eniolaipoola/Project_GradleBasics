@@ -4,20 +4,10 @@ repositories {
     mavenCentral()
 }
 
+
+/** run test task with the command below
+ * gradle test
+ */
 dependencies {
-    compile 'org.springframework:spring-core:4.1.1.RELEASE'
-}
-
-dependencies {
-    compile 'commons-logging:commons-logging:1.2'
-    testCompile 'junit:junit:4.11'
-}
-
-configurations {
-    custom
-}
-
-task copyDependencies(type: Copy) {
-    from configurations.custom
-    into 'build/libs'
+    testCompille 'junit:junit:4.11'
 }
