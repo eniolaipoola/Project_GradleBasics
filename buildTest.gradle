@@ -1,0 +1,13 @@
+apply plugin: "java"
+
+repositories {
+    mavenCentral()
+}
+
+
+/** run test task with the command below
+ * gradle test
+ */
+dependencies {
+    testCompille 'junit:junit:4.11'
+}

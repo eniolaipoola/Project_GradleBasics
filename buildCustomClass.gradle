@@ -1,0 +1,78 @@
+task copyImages(type: Copy) {
+    from 'images'
+    into 'buildCustomClass'
+}
+
+task copyJpegs(type: Copy) {
+    from 'images'
+    include '*.jpg'
+    into 'buildCustomClass'
+}
+
+task copyImageFolders(type: Copy){
+    from ('images'){
+        include '*.jpeg'
+        into 'jpeg'
+    }
+
+    from ('images'){
+        include '*.gifs'
+        into 'gifs'
+    }
+
+    into 'buildCustomClass'   //root copy destination
+}
+
+task zipImages (type: Zip){
+    baseName = 'images'
+    destinationDir = file('buildCustomClass')     //takes a java file object
+    from 'images'
+}
+
+task zipImageFolder (type: Zip){
+    baseName = 'images'
+    destinationDir = file('buildCustomClass')
+
+    from ('images') {
+        include '*.jpg'
+        into 'jpeg'
+    }
+
+    from ('images'){
+        include '*.gifs'
+        into 'gif'
+    }
+}
+
+task deleteBuild(type: Delete){
+    delete 'buildCustomClass'
+}
+
+//parameterize your buildCustomClass
+task printGreeting {
+    println greeting
+}
+
+//custom tasks
+class HelloTask extends DefaultTask {
+    String firstname
+
+    @TaskAction
+    void doAction(){
+        println "HelloWorld, $firstname"
+    }
+}
+
+task Hello (type: HelloTask){
+    firstname = "Eniola"
+}
+
+task test {
+    doLast {
+        println "1"
+    }
+
+    println "2"
+}
+
+println "3"
