@@ -1,13 +1,5 @@
-apply plugin: "java"
+//run command 'gradle wrapper'
 
-repositories {
-    mavenCentral()
-}
-
-
-/** run test task with the command below
- * gradle test
- */
-dependencies {
-    testCompille 'junit:junit:4.11'
+wrapper {
+    gradleVersion = '5.6'
 }
